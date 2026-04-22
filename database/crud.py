@@ -60,9 +60,9 @@ async def get_product(session: AsyncSession, pid: int) -> Optional[Product]:
     return (await session.execute(select(Product).where(Product.id == pid))).scalar_one_or_none()
 
 async def create_product(session: AsyncSession, name: str, price: float,
-                         emoji: str = "📦", category: str = "Asosiy",
+                         photo_id: str = None, category: str = "Asosiy",
                          description: str = "") -> Product:
-    p = Product(name=name, price=price, emoji=emoji, category=category, description=description)
+    p = Product(name=name, price=price, photo_id=photo_id, category=category, description=description)
     session.add(p); await session.commit(); await session.refresh(p)
     return p
 

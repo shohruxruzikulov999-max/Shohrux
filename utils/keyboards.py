@@ -39,7 +39,8 @@ def order_action_kb(order_id: int):
 def products_inline_kb(products):
     b = InlineKeyboardBuilder()
     for p in products:
-        b.button(text=f"{p.emoji} {p.name} — {int(p.price):,} so'm",
+        icon = "🖼" if p.photo_id else "📦"
+        b.button(text=f"{icon} {p.name} — {int(p.price):,} so'm",
                  callback_data=f"buy:{p.id}")
     b.adjust(1)
     return b.as_markup()

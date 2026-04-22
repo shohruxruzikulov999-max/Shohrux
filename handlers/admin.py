@@ -31,7 +31,7 @@ router.message.filter(IsAdmin())
 class ProductAdd(StatesGroup):
     name     = State()
     price    = State()
-    emoji    = State()
+    photo    = State()
     category = State()
     desc     = State()
 
@@ -192,14 +192,25 @@ async def prod_price(message: types.Message, state: FSMContext):
     except ValueError:
         await message.answer("❗ Faqat raqam kiriting:"); return
     await state.update_data(price=price)
-    await state.set_state(ProductAdd.emoji)
-    await message.answer("3/5 — Emoji tanlang (masalan: 🍕 🍔 ☕):")
+    await state.set_state(ProductAdd.photo)
+    await message.answer("3/5 — Mahsulot rasmini yuboring 📸
+(rasm yo'q bo'lsa "yo'q" deb yozing):")
 
-@router.message(ProductAdd.emoji)
-async def prod_emoji(message: types.Message, state: FSMContext):
+@router.message(ProductAdd.photo)
+async def prod_photo(message: types.Message, state: FSMContext):
     if message.text == "❌ Bekor qilish":
         await state.clear(); await message.answer("❌", reply_markup=admin_menu_kb()); return
-    await state.update_data(emoji=message.text.strip()[:4])
+
+    photo_id = None
+    if message.photo:
+        photo_id = message.photo[-1].file_id
+        await state.update_data(photo_id=photo_id)
+    elif message.text and message.text.lower() in ("yoq", "yo'q", "-", "skip"):
+        await state.update_data(photo_id=None)
+    else:
+        await message.answer("📸 Iltimos rasm yuboring (yoki "yo'q" deb yozing):")
+        return
+
     await state.set_state(ProductAdd.category)
     b = InlineKeyboardBuilder()
     for cat in ["Ovqat","Ichimlik","Shirinlik","Boshqa"]:
@@ -222,7 +233,7 @@ async def prod_desc_finish(message: types.Message, state: FSMContext, session: A
     desc = "" if message.text.lower() in ("yo'q","yoq","-","") else message.text
     p = await create_product(session,
         name=data["name"], price=data["price"],
-        emoji=data["emoji"], category=data["category"], description=desc)
+        photo_id=data.get("photo_id"), category=data["category"], description=desc)
     await state.clear()
     await message.answer(
         f"✅ <b>Mahsulot qo'shildi!</b>\n\n"

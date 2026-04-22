@@ -40,7 +40,7 @@ class Product(Base):
     name        = Column(String(128), nullable=False)
     description = Column(Text, nullable=True)
     price       = Column(Float, nullable=False, default=0)
-    emoji       = Column(String(8), default="📦")
+    photo_id    = Column(String(256), nullable=True)   # Telegram file_id
     category    = Column(String(64), nullable=True, default="Asosiy")
     is_active   = Column(Boolean, default=True)
     created_at  = Column(DateTime, default=datetime.utcnow)
@@ -71,17 +71,7 @@ async def init_db():
     import os; os.makedirs("data", exist_ok=True)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    async with AsyncSessionLocal() as s:
-        from sqlalchemy import select
-        if not (await s.execute(select(Product).limit(1))).scalar_one_or_none():
-            s.add_all([
-                Product(name="Burger",   emoji="🍔", price=35000, category="Ovqat",    description="Mazali burger"),
-                Product(name="Pizza",    emoji="🍕", price=65000, category="Ovqat",    description="Italyan pizza"),
-                Product(name="Sushi",    emoji="🍣", price=80000, category="Ovqat",    description="Yapon oshxonasi"),
-                Product(name="Kofe",     emoji="☕", price=15000, category="Ichimlik",  description="Issiq kofe"),
-                Product(name="Choy",     emoji="🍵", price=10000, category="Ichimlik",  description="Yashil choy"),
-            ])
-            await s.commit()
+    # Demo mahsulotlar YO'Q — admin o'zi qo'shadi
 
 async def get_session():
     async with AsyncSessionLocal() as session:
