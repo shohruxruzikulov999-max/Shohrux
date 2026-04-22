@@ -5,10 +5,7 @@ from config import settings
 def main_menu_kb():
     kb = ReplyKeyboardBuilder()
     kb.button(text="🌐 WebApp", web_app=WebAppInfo(url=settings.webapp_url))
-    kb.button(text="🛒 Buyurtmalarim")
-    kb.button(text="🛍 Mahsulotlar")
-    kb.button(text="👤 Profil")
-    kb.adjust(1, 2, 1)
+    kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)
 
 def admin_menu_kb():
