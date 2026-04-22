@@ -193,8 +193,7 @@ async def prod_price(message: types.Message, state: FSMContext):
         await message.answer("❗ Faqat raqam kiriting:"); return
     await state.update_data(price=price)
     await state.set_state(ProductAdd.photo)
-    await message.answer("3/5 — Mahsulot rasmini yuboring 📸
-(rasm yo'q bo'lsa "yo'q" deb yozing):")
+    await message.answer("3/5 — Mahsulot rasmini yuboring 📸\n(rasm yo'q bo'lsa yo'q deb yozing):")
 
 @router.message(ProductAdd.photo)
 async def prod_photo(message: types.Message, state: FSMContext):
@@ -208,7 +207,7 @@ async def prod_photo(message: types.Message, state: FSMContext):
     elif message.text and message.text.lower() in ("yoq", "yo'q", "-", "skip"):
         await state.update_data(photo_id=None)
     else:
-        await message.answer("📸 Iltimos rasm yuboring (yoki "yo'q" deb yozing):")
+        await message.answer("📸 Iltimos rasm yuboring (yoki yo'q deb yozing):")
         return
 
     await state.set_state(ProductAdd.category)
