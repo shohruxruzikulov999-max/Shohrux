@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Buyurtma</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap');
+:root{
+  --bg:#0c0e14;--s1:#141720;--s2:#1a1e2a;--b:#252a3a;
+  --accent:#5b8dee;--accent2:#a07cf5;--green:#2fd67e;--red:#f55c5c;--yellow:#f5c842;
+  --text:#e0e4f5;--muted:#636882;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:16px 16px 110px}
+body::before{content:'';position:fixed;top:-80px;left:-60px;width:300px;height:300px;
+  background:radial-gradient(circle,rgba(91,141,238,.1) 0%,transparent 70%);pointer-events:none}
+
+/* header */
+.hdr{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.hdr-av{width:44px;height:44px;border-radius:13px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.hdr-name{font-size:18px;font-weight:800}
+.hdr-sub{font-size:12px;color:var(--muted)}
+
+/* tabs */
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab{flex:1;padding:10px 6px;border-radius:12px;border:1.5px solid var(--b);
+  background:var(--s1);color:var(--muted);font-family:'Nunito',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.tab.on{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff}
+
+/* panels */
+.panel{display:none;animation:fu .3s ease}
+.panel.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* card */
+.card{background:var(--s1);border:1.5px solid var(--b);border-radius:16px;padding:18px;margin-bottom:14px}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:14px}
+
+/* product grid */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pc{background:var(--s2);border:1.5px solid var(--b);border-radius:14px;
+  padding:14px;cursor:pointer;transition:all .2s;position:relative;user-select:none}
+.pc.sel{border-color:var(--accent);background:rgba(91,141,238,.12)}
+.pc.sel::after{content:'✓';position:absolute;top:8px;right:9px;width:19px;height:19px;
+  background:var(--accent);border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff}
+.pc-em{font-size:28px;margin-bottom:8px}
+.pc-name{font-size:13px;font-weight:800}
+.pc-price{font-size:12px;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-top:3px}
+.pc-cat{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* qty */
+.qty-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.qbtn{width:40px;height:40px;border-radius:10px;background:var(--s2);border:1.5px solid var(--b);
+  color:var(--text);font-size:22px;cursor:pointer;display:grid;place-items:center;
+  transition:all .15s;flex-shrink:0}
+.qbtn:active{transform:scale(.9)}
+.qval{font-size:22px;font-weight:900;font-family:'JetBrains Mono',monospace;min-width:32px;text-align:center}
+.total-box{flex:1;text-align:right}
+.total-label{font-size:11px;color:var(--muted)}
+.total-val{font-size:18px;font-weight:900;color:var(--accent);font-family:'JetBrains Mono',monospace}
+
+/* form */
+label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:5px}
+input,textarea,select{width:100%;background:var(--s2);border:1.5px solid var(--b);border-radius:11px;
+  padding:11px 13px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;
+  outline:none;transition:border-color .2s;margin-bottom:12px}
+input:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:none;height:80px}
+
+/* info pills */
+.info-pill{display:flex;align-items:center;gap:10px;background:var(--s2);
+  border:1.5px solid var(--b);border-radius:12px;padding:10px 13px;margin-bottom:12px}
+.ip-av{width:30px;height:30px;border-radius:8px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:14px}
+.ip-name{font-size:14px;font-weight:800}
+.ip-id{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+
+/* main btn */
+.main-btn{position:fixed;bottom:16px;left:16px;right:16px;padding:16px;border-radius:16px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;
+  font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;
+  box-shadow:0 8px 30px rgba(91,141,238,.35);transition:all .2s;z-index:100}
+.main-btn:active{transform:scale(.97)}
+.main-btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* success */
+.success{display:none;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:40px 20px;animation:fu .4s ease}
+.success.show{display:flex}
+.sicon{width:76px;height:76px;border-radius:22px;
+  background:linear-gradient(135deg,var(--green),#16a85a);
+  display:grid;place-items:center;font-size:34px;margin-bottom:18px;
+  box-shadow:0 10px 36px rgba(47,214,126,.28)}
+.stitle{font-size:22px;font-weight:900;margin-bottom:8px}
+.ssub{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* loading */
+.loading{text-align:center;padding:30px;color:var(--muted);font-size:14px}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--b);
+  border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="hdr">
+    <div class="hdr-av">🛍</div>
+    <div>
+      <div class="hdr-name" id="hName">Buyurtma</div>
+      <div class="hdr-sub">Telegram WebApp</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on"  onclick="switchTab('order',this)">🛒 Buyurtma</button>
+    <button class="tab"     onclick="switchTab('form',this)">📝 Forma</button>
+    <button class="tab"     onclick="switchTab('info',this)">👤 Info</button>
+  </div>
+
+  <!-- ORDER -->
+  <div class="panel on" id="tab-order">
+    <div class="card">
+      <div class="card-title">Mahsulot tanlang</div>
+      <div id="productGrid" class="pgrid">
+        <div class="loading"><div class="spinner"></div><br>Yuklanmoqda…</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Miqdor</div>
+      <div class="qty-row">
+        <button class="qbtn" onclick="chQty(-1)">−</button>
+        <div class="qval" id="qtyVal">1</div>
+        <button class="qbtn" onclick="chQty(1)">+</button>
+        <div class="total-box">
+          <div class="total-label">Jami:</div>
+          <div class="total-val" id="totalVal">0 so'm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="panel" id="tab-form">
+    <div class="card">
+      <div class="card-title">Aloqa formasi</div>
+      <label>Ism Familiya</label>
+      <input type="text" id="fName" placeholder="Ali Valiyev"/>
+      <label>Telefon</label>
+      <input type="tel" id="fPhone" placeholder="+998 90 123 45 67"/>
+      <label>Xabar</label>
+      <textarea id="fMsg" placeholder="Xabaringizni yozing…"></textarea>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="panel" id="tab-info">
+    <div class="card">
+      <div class="card-title">Telegram ma'lumotlari</div>
+      <div class="info-pill">
+        <div class="ip-av">👤</div>
+        <div>
+          <div class="ip-name" id="iName">—</div>
+          <div class="ip-id" id="iId">ID: —</div>
+        </div>
+      </div>
+      <label>Username</label><input readonly id="iUser" value="—"/>
+      <label>Til</label><input readonly id="iLang" value="—"/>
+      <label>Platform</label><input readonly id="iPlatform" value="—"/>
+      <label>Versiya</label><input readonly id="iVer" value="—"/>
+    </div>
+  </div>
+</div>
+
+<div class="success" id="successScreen">
+  <div class="sicon">✅</div>
+  <div class="stitle">Yuborildi!</div>
+  <div class="ssub">Ma'lumotingiz muvaffaqiyatli<br>botga yuborildi.</div>
+</div>
+
+<button class="main-btn" id="mainBtn" onclick="submit()">📤 Yuborish</button>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.expand(); tg.ready();
+
+// Theme
+if(tg.colorScheme === 'light'){
+  document.documentElement.style.setProperty('--bg','#f2f4fb');
+  document.documentElement.style.setProperty('--s1','#ffffff');
+  document.documentElement.style.setProperty('--s2','#eaecf7');
+  document.documentElement.style.setProperty('--b','#d5d8ed');
+  document.documentElement.style.setProperty('--text','#1a1d2e');
+  document.documentElement.style.setProperty('--muted','#717593');
+}
+
+const user = tg.initDataUnsafe?.user;
+if(user){
+  const fn = [user.first_name, user.last_name].filter(Boolean).join(' ');
+  document.getElementById('hName').textContent = fn || 'Buyurtma';
+  document.getElementById('iName').textContent = fn || '—';
+  document.getElementById('iId').textContent = 'ID: ' + user.id;
+  document.getElementById('iUser').value = user.username ? '@'+user.username : '—';
+  document.getElementById('iLang').value = user.language_code || '—';
+}
+document.getElementById('iPlatform').value = tg.platform || '—';
+document.getElementById('iVer').value = tg.version || '—';
+
+// Products (demo - real botda API dan olinadi)
+const DEMO_PRODUCTS = [
+  {id:1,name:'Burger',emoji:'🍔',price:35000,category:'Ovqat'},
+  {id:2,name:'Pizza',emoji:'🍕',price:65000,category:'Ovqat'},
+  {id:3,name:'Sushi',emoji:'🍣',price:80000,category:'Ovqat'},
+  {id:4,name:'Kofe',emoji:'☕',price:15000,category:'Ichimlik'},
+  {id:5,name:'Choy',emoji:'🍵',price:10000,category:'Ichimlik'},
+];
+
+let products = [];
+let selProduct = null, qty = 1, curTab = 'order';
+
+function loadProducts(){
+  // Real loyihada: fetch('/api/products').then(r=>r.json()).then(renderProducts)
+  setTimeout(() => renderProducts(DEMO_PRODUCTS), 400);
+}
+
+function renderProducts(list){
+  products = list;
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = list.map(p=>`
+    <div class="pc" id="pc${p.id}" onclick="selProd(${p.id})">
+      <div class="pc-em">${p.emoji}</div>
+      <div class="pc-name">${p.name}</div>
+      <div class="pc-price">${p.price.toLocaleString('uz-UZ')} so'm</div>
+      <div class="pc-cat">${p.category}</div>
+    </div>`).join('');
+}
+
+function selProd(id){
+  document.querySelectorAll('.pc').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('pc'+id).classList.add('sel');
+  selProduct = products.find(p=>p.id===id);
+  updateTotal();
+  tg.HapticFeedback?.selectionChanged();
+}
+
+function chQty(d){
+  qty = Math.max(1, Math.min(20, qty+d));
+  document.getElementById('qtyVal').textContent = qty;
+  updateTotal();
+  tg.HapticFeedback?.impactOccurred('light');
+}
+
+function updateTotal(){
+  const t = selProduct ? selProduct.price * qty : 0;
+  document.getElementById('totalVal').textContent = t > 0 ? t.toLocaleString('uz-UZ')+' so\'m' : '0 so\'m';
+}
+
+// Tabs
+function switchTab(name, el){
+  curTab = name;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  if(el) el.classList.add('on');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('tab-'+name).classList.add('on');
+  const labels = {order:'🛒 Buyurtma', form:'📤 Yuborish', info:'📋 Yuborish'};
+  document.getElementById('mainBtn').textContent = labels[name];
+}
+
+function submit(){
+  let data = {};
+  if(curTab === 'order'){
+    if(!selProduct){ tg.showAlert('Mahsulot tanlang!'); return; }
+    data = {action:'order', product_id:selProduct.id, product:selProduct.name,
+            quantity:qty, price:selProduct.price*qty};
+  } else if(curTab === 'form'){
+    const name = document.getElementById('fName').value.trim();
+    const phone = document.getElementById('fPhone').value.trim();
+    if(!name){ tg.showAlert('Ism kiriting!'); return; }
+    data = {action:'form', name, phone, message:document.getElementById('fMsg').value.trim()};
+  } else {
+    data = {action:'info', user_id:user?.id, platform:tg.platform};
+  }
+  tg.sendData(JSON.stringify(data));
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('mainBtn').style.display = 'none';
+  document.getElementById('successScreen').classList.add('show');
+  tg.HapticFeedback?.notificationOccurred('success');
+  setTimeout(()=>tg.close(), 1800);
+}
+
+loadProducts();
+</script>
+</body>
+</html>

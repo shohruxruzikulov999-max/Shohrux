@@ -1,0 +1,196 @@
+19:07:06 | INFO     | __main__ — ✅ Bot ishga tushdi: @ShohruxbeK_uchun_bot
+19:07:06 | INFO     | aiogram.dispatcher — Start polling
+19:07:06 | INFO     | aiogram.dispatcher — Run polling for bot @ShohruxbeK_uchun_bot id=8670307100 - 'Magazinchi bot'
+19:07:21 | INFO     | aiogram.event — Update id=44040327 is handled. Duration 734 ms by bot id=8670307100
+19:07:43 | INFO     | aiogram.event — Update id=44040328 is handled. Duration 717 ms by bot id=8670307100
+19:07:47 | INFO     | aiogram.event — Update id=44040329 is handled. Duration 609 ms by bot id=8670307100
+19:07:53 | INFO     | aiogram.event — Update id=44040330 is handled. Duration 187 ms by bot id=8670307100
+19:07:58 | INFO     | aiogram.event — Update id=44040331 is handled. Duration 219 ms by bot id=8670307100
+19:08:00 | INFO     | aiogram.event — Update id=44040332 is handled. Duration 250 ms by bot id=8670307100
+19:08:02 | INFO     | aiogram.event — Update id=44040333 is handled. Duration 405 ms by bot id=8670307100
+19:08:04 | INFO     | aiogram.event — Update id=44040334 is handled. Duration 421 ms by bot id=8670307100
+19:08:38 | INFO     | aiogram.event — Update id=44040335 is handled. Duration 921 ms by bot id=8670307100
+19:08:40 | INFO     | aiogram.event — Update id=44040336 is handled. Duration 421 ms by bot id=8670307100
+19:08:41 | INFO     | aiogram.event — Update id=44040337 is handled. Duration 234 ms by bot id=8670307100
+19:08:47 | INFO     | aiogram.event — Update id=44040338 is handled. Duration 514 ms by bot id=8670307100
+19:08:51 | INFO     | aiogram.event — Update id=44040339 is handled. Duration 311 ms by bot id=8670307100
+19:08:57 | INFO     | aiogram.event — Update id=44040340 is handled. Duration 313 ms by bot id=8670307100
+19:08:59 | INFO     | aiogram.event — Update id=44040341 is handled. Duration 389 ms by bot id=8670307100
+19:09:05 | INFO     | aiogram.event — Update id=44040342 is handled. Duration 390 ms by bot id=8670307100
+19:09:31 | INFO     | aiogram.event — Update id=44040343 is handled. Duration 484 ms by bot id=8670307100
+19:09:57 | INFO     | aiogram.event — Update id=44040344 is handled. Duration 921 ms by bot id=8670307100
+19:09:58 | INFO     | aiogram.event — Update id=44040345 is handled. Duration 421 ms by bot id=8670307100
+19:10:07 | INFO     | aiogram.event — Update id=44040346 is handled. Duration 515 ms by bot id=8670307100
+19:10:10 | INFO     | aiogram.event — Update id=44040347 is handled. Duration 407 ms by bot id=8670307100
+19:10:13 | INFO     | aiogram.event — Update id=44040348 is handled. Duration 436 ms by bot id=8670307100
+19:10:17 | INFO     | aiogram.event — Update id=44040349 is handled. Duration 389 ms by bot id=8670307100
+19:10:19 | INFO     | aiogram.event — Update id=44040350 is handled. Duration 813 ms by bot id=8670307100
+19:10:24 | INFO     | aiogram.event — Update id=44040351 is handled. Duration 546 ms by bot id=8670307100
+19:10:26 | INFO     | aiogram.event — Update id=44040352 is handled. Duration 500 ms by bot id=8670307100
+19:10:31 | INFO     | aiogram.event — Update id=44040353 is handled. Duration 312 ms by bot id=8670307100
+19:10:36 | INFO     | aiogram.event — Update id=44040354 is handled. Duration 250 ms by bot id=8670307100
+19:10:38 | INFO     | aiogram.event — Update id=44040355 is handled. Duration 329 ms by bot id=8670307100
+19:10:45 | INFO     | aiogram.event — Update id=44040356 is handled. Duration 546 ms by bot id=8670307100
+19:10:51 | INFO     | aiogram.event — Update id=44040357 is handled. Duration 1530 ms by bot id=8670307100
+19:10:56 | INFO     | aiogram.event — Update id=44040358 is not handled. Duration 0 ms by bot id=8670307100
+19:11:03 | INFO     | aiogram.event — Update id=44040359 is not handled. Duration 15 ms by bot id=8670307100
+19:11:07 | INFO     | aiogram.event — Update id=44040360 is not handled. Duration 0 ms by bot id=8670307100
+19:11:07 | INFO     | aiogram.event — Update id=44040361 is not handled. Duration 15 ms by bot id=8670307100
+19:11:07 | INFO     | aiogram.event — Update id=44040362 is not handled. Duration 0 ms by bot id=8670307100
+19:11:08 | INFO     | aiogram.event — Update id=44040363 is not handled. Duration 16 ms by bot id=8670307100
+19:11:08 | INFO     | aiogram.event — Update id=44040364 is not handled. Duration 16 ms by bot id=8670307100
+19:11:42 | INFO     | aiogram.event — Update id=44040365 is handled. Duration 765 ms by bot id=8670307100
+19:11:50 | INFO     | aiogram.event — Update id=44040366 is handled. Duration 514 ms by bot id=8670307100
+19:11:56 | INFO     | aiogram.event — Update id=44040367 is handled. Duration 343 ms by bot id=8670307100
+19:11:57 | INFO     | aiogram.event — Update id=44040368 is handled. Duration 359 ms by bot id=8670307100
+19:11:58 | INFO     | aiogram.event — Update id=44040369 is handled. Duration 264 ms by bot id=8670307100
+19:12:01 | INFO     | aiogram.event — Update id=44040370 is handled. Duration 313 ms by bot id=8670307100
+19:12:03 | INFO     | aiogram.event — Update id=44040371 is handled. Duration 578 ms by bot id=8670307100
+19:12:27 | INFO     | aiogram.event — Update id=44040372 is handled. Duration 1530 ms by bot id=8670307100
+19:12:58 | INFO     | aiogram.event — Update id=44040373 is handled. Duration 936 ms by bot id=8670307100
+19:13:00 | INFO     | aiogram.event — Update id=44040374 is handled. Duration 406 ms by bot id=8670307100
+19:13:19 | INFO     | aiogram.event — Update id=44040375 is handled. Duration 1062 ms by bot id=8670307100
+19:15:19 | INFO     | aiogram.event — Update id=44040376 is not handled. Duration 0 ms by bot id=8670307100
+19:15:24 | INFO     | aiogram.event — Update id=44040377 is not handled. Duration 0 ms by bot id=8670307100
+19:15:24 | INFO     | aiogram.event — Update id=44040378 is not handled. Duration 15 ms by bot id=8670307100
+19:15:25 | INFO     | aiogram.event — Update id=44040379 is not handled. Duration 0 ms by bot id=8670307100
+19:15:25 | INFO     | aiogram.event — Update id=44040380 is not handled. Duration 0 ms by bot id=8670307100
+19:15:25 | INFO     | aiogram.event — Update id=44040381 is not handled. Duration 0 ms by bot id=8670307100
+19:15:25 | INFO     | aiogram.event — Update id=44040382 is not handled. Duration 0 ms by bot id=8670307100
+19:15:25 | INFO     | aiogram.event — Update id=44040383 is not handled. Duration 0 ms by bot id=8670307100
+19:15:25 | INFO     | aiogram.event — Update id=44040384 is not handled. Duration 14 ms by bot id=8670307100
+19:15:25 | INFO     | aiogram.event — Update id=44040385 is not handled. Duration 14 ms by bot id=8670307100
+19:15:26 | INFO     | aiogram.event — Update id=44040386 is not handled. Duration 15 ms by bot id=8670307100
+19:15:26 | INFO     | aiogram.event — Update id=44040387 is not handled. Duration 15 ms by bot id=8670307100
+19:15:26 | INFO     | aiogram.event — Update id=44040388 is not handled. Duration 16 ms by bot id=8670307100
+19:15:31 | INFO     | aiogram.event — Update id=44040389 is handled. Duration 1296 ms by bot id=8670307100
+19:15:39 | INFO     | aiogram.event — Update id=44040390 is handled. Duration 327 ms by bot id=8670307100
+19:15:40 | INFO     | aiogram.event — Update id=44040391 is handled. Duration 327 ms by bot id=8670307100
+19:15:43 | INFO     | aiogram.event — Update id=44040392 is handled. Duration 452 ms by bot id=8670307100
+19:15:49 | INFO     | aiogram.event — Update id=44040393 is handled. Duration 234 ms by bot id=8670307100
+19:15:55 | INFO     | aiogram.event — Update id=44040394 is handled. Duration 375 ms by bot id=8670307100
+19:16:00 | INFO     | aiogram.event — Update id=44040395 is handled. Duration 295 ms by bot id=8670307100
+19:16:04 | INFO     | aiogram.event — Update id=44040396 is handled. Duration 390 ms by bot id=8670307100
+19:16:11 | INFO     | aiogram.event — Update id=44040397 is handled. Duration 295 ms by bot id=8670307100
+19:16:23 | INFO     | aiogram.event — Update id=44040399 is not handled. Duration 14 ms by bot id=8670307100
+19:16:23 | INFO     | aiogram.event — Update id=44040398 is handled. Duration 9610 ms by bot id=8670307100
+19:16:23 | INFO     | aiogram.event — Update id=44040400 is not handled. Duration 15 ms by bot id=8670307100
+19:16:32 | INFO     | aiogram.event — Update id=44040401 is handled. Duration 296 ms by bot id=8670307100
+19:16:36 | INFO     | aiogram.event — Update id=44040402 is handled. Duration 312 ms by bot id=8670307100
+19:16:39 | INFO     | aiogram.event — Update id=44040403 is handled. Duration 282 ms by bot id=8670307100
+19:16:42 | INFO     | aiogram.event — Update id=44040404 is handled. Duration 421 ms by bot id=8670307100
+19:16:48 | INFO     | aiogram.event — Update id=44040405 is handled. Duration 530 ms by bot id=8670307100
+19:16:50 | INFO     | aiogram.event — Update id=44040406 is handled. Duration 1530 ms by bot id=8670307100
+19:20:07 | INFO     | aiogram.event — Update id=44040407 is not handled. Duration 0 ms by bot id=8670307100
+19:30:43 | INFO     | aiogram.dispatcher — Polling stopped
+19:30:44 | ERROR    | aiogram.dispatcher — Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientOSError: [Errno 1] [SSL: APPLICATION_DATA_AFTER_CLOSE_NOTIFY] application data after close notify (_ssl.c:2685)
+19:30:44 | WARNING  | aiogram.dispatcher — Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8670307100)
+19:30:44 | INFO     | aiogram.dispatcher — Polling stopped for bot @ShohruxbeK_uchun_bot id=8670307100 - 'Magazinchi bot'
+19:30:48 | INFO     | __main__ — ✅ Bot ishga tushdi: @ShohruxbeK_uchun_bot
+19:30:49 | INFO     | aiogram.dispatcher — Start polling
+19:30:49 | INFO     | aiogram.dispatcher — Run polling for bot @ShohruxbeK_uchun_bot id=8670307100 - 'Magazinchi bot'
+12:02:20 | INFO     | __main__ — ✅ Bot ishga tushdi: @ShohruxbeK_uchun_bot
+12:02:20 | INFO     | aiogram.dispatcher — Start polling
+12:02:20 | INFO     | aiogram.dispatcher — Run polling for bot @ShohruxbeK_uchun_bot id=8670307100 - 'Magazinchi bot'
+12:02:22 | INFO     | aiogram.event — Update id=44040408 is handled. Duration 1921 ms by bot id=8670307100
+12:02:32 | INFO     | aiogram.event — Update id=44040409 is handled. Duration 688 ms by bot id=8670307100
+12:03:07 | INFO     | aiogram.event — Update id=44040410 is handled. Duration 438 ms by bot id=8670307100
+12:03:09 | INFO     | aiogram.event — Update id=44040411 is handled. Duration 296 ms by bot id=8670307100
+12:03:12 | INFO     | aiogram.event — Update id=44040412 is handled. Duration 811 ms by bot id=8670307100
+12:03:15 | INFO     | aiogram.event — Update id=44040413 is handled. Duration 421 ms by bot id=8670307100
+12:03:39 | INFO     | aiogram.event — Update id=44040418 is handled. Duration 609 ms by bot id=8670307100
+12:03:39 | INFO     | aiogram.event — Update id=44040416 is handled. Duration 609 ms by bot id=8670307100
+12:03:39 | INFO     | aiogram.event — Update id=44040417 is handled. Duration 672 ms by bot id=8670307100
+12:03:39 | INFO     | aiogram.event — Update id=44040414 is not handled. Duration 891 ms by bot id=8670307100
+12:03:39 | ERROR    | aiogram.event — Cause exception while process update id=44040414 by bot id=8670307100
+TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+Traceback (most recent call last):
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\middlewares\error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\middlewares\user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\fsm\middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\router.py", line 174, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\middlewares\middlewares.py", line 21, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\middlewares\middlewares.py", line 30, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\middlewares\middlewares.py", line 40, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\handlers\admin.py", line 265, in prod_edit_field
+    await callback.answer()
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\methods\base.py", line 84, in emit
+    return await bot(self)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\client\bot.py", line 488, in __call__
+    return await self.session(self, method, timeout=request_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\client\session\base.py", line 254, in __call__
+    return cast(TelegramType, await middleware(bot, method))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\client\session\aiohttp.py", line 189, in make_request
+    response = self.check_response(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sh\Music\tgbot_template\venv\Lib\site-packages\aiogram\client\session\base.py", line 120, in check_response
+    raise TelegramBadRequest(method=method, message=description)
+aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+12:03:40 | INFO     | aiogram.event — Update id=44040415 is handled. Duration 781 ms by bot id=8670307100
+12:03:42 | INFO     | aiogram.event — Update id=44040419 is handled. Duration 297 ms by bot id=8670307100
+12:03:44 | INFO     | aiogram.event — Update id=44040420 is handled. Duration 421 ms by bot id=8670307100
+12:03:50 | INFO     | aiogram.event — Update id=44040421 is handled. Duration 625 ms by bot id=8670307100
+12:08:20 | ERROR    | aiogram.dispatcher — Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientOSError: [WinError 1236] Подключение к сети было разорвано локальной системой
+12:08:20 | WARNING  | aiogram.dispatcher — Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8670307100)
+12:08:32 | INFO     | aiogram.dispatcher — Connection established (tryings = 1, bot id = 8670307100)
+12:20:48 | ERROR    | aiogram.dispatcher — Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientOSError: [WinError 1236] Подключение к сети было разорвано локальной системой
+12:20:48 | WARNING  | aiogram.dispatcher — Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8670307100)
+12:21:47 | INFO     | aiogram.dispatcher — Connection established (tryings = 1, bot id = 8670307100)
+14:02:14 | INFO     | __main__ — ✅ Bot ishga tushdi: @ShohruxbeK_uchun_bot
+14:02:14 | INFO     | aiogram.dispatcher — Start polling
+14:02:14 | INFO     | aiogram.dispatcher — Run polling for bot @ShohruxbeK_uchun_bot id=8670307100 - 'Magazinchi bot'
+14:08:02 | INFO     | aiogram.dispatcher — Polling stopped
+14:08:03 | INFO     | aiogram.dispatcher — Polling stopped for bot @ShohruxbeK_uchun_bot id=8670307100 - 'Magazinchi bot'
