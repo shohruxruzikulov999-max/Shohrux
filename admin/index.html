@@ -3,778 +3,297 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Admin Panel</title>
+<title>Buyurtma</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap');
 :root{
-  --bg:#080a10;--bg2:#0d0f17;--sf:#12151e;--sf2:#181b26;
-  --bd:#21253a;--accent:#4f7ef8;--a2:#7c56f5;--green:#1fd87a;
-  --red:#f5564e;--yellow:#f5c340;--orange:#f58a3a;
-  --tx:#d8ddf0;--mu:#4e5470;--r:14px;
-  --font:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+  --bg:#0c0e14;--s1:#141720;--s2:#1a1e2a;--b:#252a3a;
+  --accent:#5b8dee;--accent2:#a07cf5;--green:#2fd67e;--red:#f55c5c;--yellow:#f5c842;
+  --text:#e0e4f5;--muted:#636882;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--tx);min-height:100vh;display:flex;font-size:14px}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:16px 16px 110px}
+body::before{content:'';position:fixed;top:-80px;left:-60px;width:300px;height:300px;
+  background:radial-gradient(circle,rgba(91,141,238,.1) 0%,transparent 70%);pointer-events:none}
 
-/* ── SIDEBAR ── */
-.sb{width:230px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--bd);
-  display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;
-  transition:transform .25s;z-index:200}
-.sb-logo{display:flex;align-items:center;gap:10px;padding:22px 18px 18px;border-bottom:1px solid var(--bd)}
-.sb-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--a2));
-  display:grid;place-items:center;font-size:16px}
-.sb-title{font-size:15px;font-weight:800;letter-spacing:-.3px}
-.sb-ver{font-size:10px;color:var(--mu)}
-nav{flex:1;padding:14px 10px;overflow-y:auto}
-.ns{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mu);padding:0 8px;margin:14px 0 6px}
-.ni{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;cursor:pointer;
-  font-size:13px;font-weight:600;color:var(--mu);transition:all .15s;user-select:none}
-.ni:hover{background:var(--sf);color:var(--tx)}
-.ni.on{background:rgba(79,126,248,.15);color:var(--accent);font-weight:700}
-.ni .ic{width:18px;text-align:center;font-size:15px}
-.nb{margin-left:auto;background:var(--accent);color:#fff;font-size:10px;font-weight:700;
-  padding:2px 6px;border-radius:20px}
-.nb.warn{background:var(--orange)}
-.sb-foot{padding:14px;border-top:1px solid var(--bd);font-size:11px;color:var(--mu)}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);
-  box-shadow:0 0 5px var(--green);animation:pulse 2s infinite;margin-right:5px;vertical-align:middle}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+/* header */
+.hdr{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.hdr-av{width:44px;height:44px;border-radius:13px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.hdr-name{font-size:18px;font-weight:800}
+.hdr-sub{font-size:12px;color:var(--muted)}
 
-/* ── MAIN ── */
-.main{margin-left:230px;flex:1;min-height:100vh;display:flex;flex-direction:column}
-.topbar{height:58px;background:var(--bg2);border-bottom:1px solid var(--bd);
-  display:flex;align-items:center;justify-content:space-between;padding:0 22px;
-  position:sticky;top:0;z-index:100}
-.tb-title{font-size:16px;font-weight:800}
-.tb-btns{display:flex;gap:10px;align-items:center}
-.tb-btn{padding:7px 13px;border-radius:8px;border:1px solid var(--bd);
-  background:var(--sf);color:var(--tx);font-family:var(--font);font-size:12px;
-  font-weight:600;cursor:pointer;transition:all .15s}
-.tb-btn:hover{border-color:var(--accent);color:var(--accent)}
-.tb-btn.pri{background:linear-gradient(135deg,var(--accent),var(--a2));
-  border-color:transparent;color:#fff}
-.tb-btn.pri:hover{opacity:.85}
-.mob-btn{display:none;background:none;border:none;color:var(--tx);font-size:20px;cursor:pointer}
+/* tabs */
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab{flex:1;padding:10px 6px;border-radius:12px;border:1.5px solid var(--b);
+  background:var(--s1);color:var(--muted);font-family:'Nunito',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.tab.on{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff}
 
-/* ── CONTENT ── */
-.content{padding:22px;flex:1}
-.pg{display:none;animation:fu .22s ease}
-.pg.on{display:block}
-@keyframes fu{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+/* panels */
+.panel{display:none;animation:fu .3s ease}
+.panel.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── STAT GRID ── */
-.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
-.sc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:18px;position:relative;overflow:hidden}
-.sc::before{content:'';position:absolute;top:-28px;right:-18px;width:80px;height:80px;
-  border-radius:50%;background:var(--ac,var(--accent));opacity:.1}
-.sc-label{font-size:11px;color:var(--mu);font-weight:600;margin-bottom:8px}
-.sc-val{font-size:26px;font-weight:800;font-family:var(--mono);line-height:1}
-.sc-sub{font-size:11px;color:var(--mu);margin-top:6px}
-.sc-sub.up{color:var(--green)} .sc-sub.dn{color:var(--red)}
+/* card */
+.card{background:var(--s1);border:1.5px solid var(--b);border-radius:16px;padding:18px;margin-bottom:14px}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:14px}
 
-/* ── TABLE ── */
-.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.sh-title{font-size:15px;font-weight:800}
-.tw{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:22px}
-table{width:100%;border-collapse:collapse}
-thead tr{background:var(--sf2);border-bottom:1px solid var(--bd)}
-th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;
-  text-transform:uppercase;letter-spacing:.07em;color:var(--mu)}
-tbody tr{border-bottom:1px solid var(--bd);transition:background .1s}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:var(--sf2)}
-td{padding:11px 14px;vertical-align:middle}
-.tm{font-family:var(--mono);font-size:11px;color:var(--mu)}
-.tb{font-weight:700}
+/* product grid */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pc{background:var(--s2);border:1.5px solid var(--b);border-radius:14px;
+  padding:14px;cursor:pointer;transition:all .2s;position:relative;user-select:none}
+.pc.sel{border-color:var(--accent);background:rgba(91,141,238,.12)}
+.pc.sel::after{content:'✓';position:absolute;top:8px;right:9px;width:19px;height:19px;
+  background:var(--accent);border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff}
+.pc-em{font-size:28px;margin-bottom:8px}
+.pc-name{font-size:13px;font-weight:800}
+.pc-price{font-size:12px;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-top:3px}
+.pc-cat{font-size:10px;color:var(--muted);margin-top:2px}
 
-/* ── BADGE ── */
-.bge{display:inline-flex;align-items:center;gap:3px;padding:3px 7px;border-radius:6px;font-size:11px;font-weight:700}
-.g{background:rgba(31,216,122,.13);color:var(--green)}
-.y{background:rgba(245,195,64,.13);color:var(--yellow)}
-.r{background:rgba(245,86,78,.13);color:var(--red)}
-.b{background:rgba(79,126,248,.13);color:var(--accent)}
-.o{background:rgba(245,138,58,.13);color:var(--orange)}
+/* qty */
+.qty-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.qbtn{width:40px;height:40px;border-radius:10px;background:var(--s2);border:1.5px solid var(--b);
+  color:var(--text);font-size:22px;cursor:pointer;display:grid;place-items:center;
+  transition:all .15s;flex-shrink:0}
+.qbtn:active{transform:scale(.9)}
+.qval{font-size:22px;font-weight:900;font-family:'JetBrains Mono',monospace;min-width:32px;text-align:center}
+.total-box{flex:1;text-align:right}
+.total-label{font-size:11px;color:var(--muted)}
+.total-val{font-size:18px;font-weight:900;color:var(--accent);font-family:'JetBrains Mono',monospace}
 
-/* ── TOOLBAR ── */
-.tbar{display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
-.srch{flex:1;min-width:140px;background:var(--sf);border:1px solid var(--bd);
-  border-radius:10px;padding:9px 13px;color:var(--tx);font-family:var(--font);
-  font-size:13px;outline:none}
-.srch:focus{border-color:var(--accent)}
-.srch::placeholder{color:var(--mu)}
-select.fsel{background:var(--sf);border:1px solid var(--bd);border-radius:10px;
-  padding:9px 11px;color:var(--tx);font-family:var(--font);font-size:13px;outline:none;cursor:pointer}
+/* form */
+label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:5px}
+input,textarea,select{width:100%;background:var(--s2);border:1.5px solid var(--b);border-radius:11px;
+  padding:11px 13px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;
+  outline:none;transition:border-color .2s;margin-bottom:12px}
+input:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:none;height:80px}
 
-/* ── BUTTONS ── */
-.btn{padding:6px 11px;border-radius:7px;border:none;font-family:var(--font);
-  font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
-.btn-s{padding:4px 8px;font-size:11px}
-.btn-ghost{background:transparent;border:1px solid var(--bd);color:var(--mu)}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
-.btn-red{background:rgba(245,86,78,.13);color:var(--red);border:1px solid rgba(245,86,78,.2)}
-.btn-red:hover{background:var(--red);color:#fff}
-.btn-grn{background:rgba(31,216,122,.13);color:var(--green);border:1px solid rgba(31,216,122,.2)}
-.btn-grn:hover{background:var(--green);color:#000}
-.btn-pri{background:linear-gradient(135deg,var(--accent),var(--a2));color:#fff;border:none;
-  padding:9px 16px;font-size:13px;border-radius:10px}
-.btn-pri:hover{opacity:.85}
-.btn-yel{background:rgba(245,195,64,.13);color:var(--yellow);border:1px solid rgba(245,195,64,.2)}
-.btn-yel:hover{background:var(--yellow);color:#000}
-.btn-ora{background:rgba(245,138,58,.13);color:var(--orange);border:1px solid rgba(245,138,58,.2)}
-.btn-ora:hover{background:var(--orange);color:#fff}
+/* info pills */
+.info-pill{display:flex;align-items:center;gap:10px;background:var(--s2);
+  border:1.5px solid var(--b);border-radius:12px;padding:10px 13px;margin-bottom:12px}
+.ip-av{width:30px;height:30px;border-radius:8px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:14px}
+.ip-name{font-size:14px;font-weight:800}
+.ip-id{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
 
-/* ── PRODUCT CARDS ── */
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:22px}
-.pcard{background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--r);padding:18px;
-  transition:border-color .2s;position:relative}
-.pcard.inactive{opacity:.55}
-.pcard:hover{border-color:var(--accent)}
-.pc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
-.pc-em{font-size:32px}
-.pc-status{position:absolute;top:10px;right:10px;width:9px;height:9px;border-radius:50%;background:var(--green)}
-.pc-status.off{background:var(--red)}
-.pc-name{font-size:15px;font-weight:800;margin-bottom:4px}
-.pc-desc{font-size:12px;color:var(--mu);margin-bottom:10px;line-height:1.5;
-  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.pc-price{font-size:16px;font-weight:800;font-family:var(--mono);color:var(--accent)}
-.pc-cat{font-size:11px;color:var(--mu);margin-top:2px}
-.pc-actions{display:flex;gap:6px;margin-top:12px}
-.pc-id{font-size:10px;color:var(--mu);font-family:var(--mono);margin-top:8px}
+/* main btn */
+.main-btn{position:fixed;bottom:16px;left:16px;right:16px;padding:16px;border-radius:16px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;
+  font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;
+  box-shadow:0 8px 30px rgba(91,141,238,.35);transition:all .2s;z-index:100}
+.main-btn:active{transform:scale(.97)}
+.main-btn:disabled{opacity:.45;cursor:not-allowed}
 
-/* ── MODAL ── */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);
-  z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.modal-bg.show{display:flex}
-.modal{background:var(--sf);border:1px solid var(--bd);border-radius:20px;
-  padding:28px;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;
-  animation:fu .25s ease}
-.modal-title{font-size:18px;font-weight:800;margin-bottom:20px;display:flex;
-  align-items:center;justify-content:space-between}
-.modal-close{background:none;border:none;color:var(--mu);font-size:20px;cursor:pointer;
-  padding:2px 6px;border-radius:6px;transition:color .15s}
-.modal-close:hover{color:var(--tx)}
-.form-group{margin-bottom:16px}
-.form-label{display:block;font-size:12px;color:var(--mu);font-weight:700;margin-bottom:6px}
-.form-input,.form-textarea,.form-select{width:100%;background:var(--sf2);border:1.5px solid var(--bd);
-  border-radius:10px;padding:11px 13px;color:var(--tx);font-family:var(--font);
-  font-size:14px;outline:none;transition:border-color .2s}
-.form-input:focus,.form-textarea:focus{border-color:var(--accent)}
-.form-textarea{resize:vertical;min-height:80px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.emoji-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.ep-btn{width:38px;height:38px;border-radius:9px;background:var(--sf2);border:1.5px solid var(--bd);
-  font-size:20px;cursor:pointer;display:grid;place-items:center;transition:all .15s}
-.ep-btn.sel{border-color:var(--accent);background:rgba(79,126,248,.15)}
-.modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--bd)}
+/* success */
+.success{display:none;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:40px 20px;animation:fu .4s ease}
+.success.show{display:flex}
+.sicon{width:76px;height:76px;border-radius:22px;
+  background:linear-gradient(135deg,var(--green),#16a85a);
+  display:grid;place-items:center;font-size:34px;margin-bottom:18px;
+  box-shadow:0 10px 36px rgba(47,214,126,.28)}
+.stitle{font-size:22px;font-weight:900;margin-bottom:8px}
+.ssub{font-size:14px;color:var(--muted);line-height:1.6}
 
-/* ── BROADCAST ── */
-.bc-box{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;max-width:620px}
-.bc-ta{width:100%;background:var(--sf2);border:1.5px solid var(--bd);border-radius:10px;
-  padding:13px;color:var(--tx);font-family:var(--font);font-size:14px;resize:none;height:120px;outline:none}
-.bc-ta:focus{border-color:var(--accent)}
-.bc-pre{background:var(--sf2);border:1px solid var(--bd);border-left:3px solid var(--accent);
-  border-radius:10px;padding:13px;min-height:56px;font-size:13px;line-height:1.6;
-  margin-bottom:14px;white-space:pre-wrap;color:var(--tx)}
-.bc-meta{font-size:12px;color:var(--mu);margin-bottom:14px}
-
-/* ── LOGIN ── */
-.lw{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
-.lc{background:var(--sf);border:1px solid var(--bd);border-radius:22px;padding:38px 34px;width:330px;text-align:center}
-.lic{width:58px;height:58px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--a2));
-  display:grid;place-items:center;font-size:26px;margin:0 auto 18px}
-.lt{font-size:20px;font-weight:800;margin-bottom:4px}
-.ls{font-size:13px;color:var(--mu);margin-bottom:22px}
-.li{width:100%;background:var(--sf2);border:1.5px solid var(--bd);border-radius:10px;
-  padding:12px;color:var(--tx);font-family:var(--font);font-size:14px;
-  outline:none;text-align:center;letter-spacing:2px;margin-bottom:10px}
-.li:focus{border-color:var(--accent)}
-.lerr{color:var(--red);font-size:12px;font-weight:600;margin-bottom:10px;display:none}
-
-/* ── MOBILE ── */
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150}
-.ov.show{display:block}
-@media(max-width:900px){
-  .sgrid{grid-template-columns:1fr 1fr}
-  .sb{transform:translateX(-100%)}.sb.open{transform:translateX(0)}
-  .main{margin-left:0}.mob-btn{display:block}
-}
-@media(max-width:520px){
-  .sgrid{grid-template-columns:1fr}.content{padding:14px}
-  .pgrid{grid-template-columns:1fr}
-}
+/* loading */
+.loading{text-align:center;padding:30px;color:var(--muted);font-size:14px}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--b);
+  border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div class="lw" id="lw">
-  <div class="lc">
-    <div class="lic">🔐</div>
-    <div class="lt">Admin Panel</div>
-    <div class="ls">Parolni kiriting</div>
-    <input class="li" type="password" id="li" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()"/>
-    <div class="lerr" id="lerr">❌ Noto'g'ri parol</div>
-    <button class="btn-pri" style="width:100%;padding:12px;font-size:14px" onclick="login()">Kirish</button>
+<div id="app">
+  <div class="hdr">
+    <div class="hdr-av">🛍</div>
+    <div>
+      <div class="hdr-name" id="hName">Buyurtma</div>
+      <div class="hdr-sub">Telegram WebApp</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on"  onclick="switchTab('order',this)">🛒 Buyurtma</button>
+    <button class="tab"     onclick="switchTab('form',this)">📝 Forma</button>
+    <button class="tab"     onclick="switchTab('info',this)">👤 Info</button>
+  </div>
+
+  <!-- ORDER -->
+  <div class="panel on" id="tab-order">
+    <div class="card">
+      <div class="card-title">Mahsulot tanlang</div>
+      <div id="productGrid" class="pgrid">
+        <div class="loading"><div class="spinner"></div><br>Yuklanmoqda…</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Miqdor</div>
+      <div class="qty-row">
+        <button class="qbtn" onclick="chQty(-1)">−</button>
+        <div class="qval" id="qtyVal">1</div>
+        <button class="qbtn" onclick="chQty(1)">+</button>
+        <div class="total-box">
+          <div class="total-label">Jami:</div>
+          <div class="total-val" id="totalVal">0 so'm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="panel" id="tab-form">
+    <div class="card">
+      <div class="card-title">Aloqa formasi</div>
+      <label>Ism Familiya</label>
+      <input type="text" id="fName" placeholder="Ali Valiyev"/>
+      <label>Telefon</label>
+      <input type="tel" id="fPhone" placeholder="+998 90 123 45 67"/>
+      <label>Xabar</label>
+      <textarea id="fMsg" placeholder="Xabaringizni yozing…"></textarea>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="panel" id="tab-info">
+    <div class="card">
+      <div class="card-title">Telegram ma'lumotlari</div>
+      <div class="info-pill">
+        <div class="ip-av">👤</div>
+        <div>
+          <div class="ip-name" id="iName">—</div>
+          <div class="ip-id" id="iId">ID: —</div>
+        </div>
+      </div>
+      <label>Username</label><input readonly id="iUser" value="—"/>
+      <label>Til</label><input readonly id="iLang" value="—"/>
+      <label>Platform</label><input readonly id="iPlatform" value="—"/>
+      <label>Versiya</label><input readonly id="iVer" value="—"/>
+    </div>
   </div>
 </div>
 
-<div class="ov" id="ov" onclick="closeSB()"></div>
-
-<!-- SIDEBAR -->
-<aside class="sb" id="sb">
-  <div class="sb-logo">
-    <div class="sb-icon">🤖</div>
-    <div><div class="sb-title">BotAdmin</div><div class="sb-ver">v2.0</div></div>
-  </div>
-  <nav>
-    <div class="ns">Asosiy</div>
-    <div class="ni on" onclick="go('dashboard',this)"><span class="ic">📊</span>Dashboard</div>
-    <div class="ni"    onclick="go('users',this)"><span class="ic">👥</span>Foydalanuvchilar<span class="nb" id="ubadge">0</span></div>
-    <div class="ni"    onclick="go('orders',this)"><span class="ic">📦</span>Buyurtmalar<span class="nb warn" id="obadge">0</span></div>
-    <div class="ns">Katalog</div>
-    <div class="ni"    onclick="go('products',this)"><span class="ic">🛍</span>Mahsulotlar<span class="nb" id="pbadge">0</span></div>
-    <div class="ns">Amallar</div>
-    <div class="ni"    onclick="go('broadcast',this)"><span class="ic">📢</span>Broadcast</div>
-    <div class="ni"    onclick="go('settings',this)"><span class="ic">⚙️</span>Sozlamalar</div>
-  </nav>
-  <div class="sb-foot">
-    <div><span class="dot"></span>Bot ishlamoqda</div>
-    <div style="margin-top:5px;font-size:10px" id="clock"></div>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<div class="main">
-  <div class="topbar">
-    <div style="display:flex;align-items:center;gap:10px">
-      <button class="mob-btn" onclick="openSB()">☰</button>
-      <div class="tb-title" id="ptitle">Dashboard</div>
-    </div>
-    <div class="tb-btns">
-      <button class="tb-btn" onclick="refresh()">🔄 Yangilash</button>
-      <button class="tb-btn pri" onclick="openAddModal()">➕ Mahsulot</button>
-    </div>
-  </div>
-
-  <div class="content">
-
-    <!-- ═══ DASHBOARD ═══ -->
-    <div class="pg on" id="pg-dashboard">
-      <div class="sgrid">
-        <div class="sc" style="--ac:var(--accent)">
-          <div class="sc-label">👥 Foydalanuvchilar</div>
-          <div class="sc-val" id="su">0</div>
-          <div class="sc-sub up" id="suNew">↑ +0 bugun</div>
-        </div>
-        <div class="sc" style="--ac:var(--green)">
-          <div class="sc-label">🛍 Mahsulotlar</div>
-          <div class="sc-val" id="sp">0</div>
-          <div class="sc-sub" id="spA" style="color:var(--mu)">0 faol</div>
-        </div>
-        <div class="sc" style="--ac:var(--yellow)">
-          <div class="sc-label">📦 Buyurtmalar</div>
-          <div class="sc-val" id="so">0</div>
-          <div class="sc-sub warn" id="soPend" style="color:var(--orange)">⏳ 0 kutmoqda</div>
-        </div>
-        <div class="sc" style="--ac:var(--a2)">
-          <div class="sc-label">💰 Tushum</div>
-          <div class="sc-val" id="sr">0</div>
-          <div class="sc-sub" style="color:var(--mu)">so'm</div>
-        </div>
-      </div>
-      <div class="sh"><div class="sh-title">📦 So'nggi buyurtmalar</div>
-        <button class="btn btn-ghost btn-s" onclick="go('orders',null)">Barchasi →</button></div>
-      <div class="tw"><table><thead><tr>
-        <th>#</th><th>User</th><th>Mahsulot</th><th>Narx</th><th>Status</th><th>Sana</th>
-      </tr></thead><tbody id="dOBody"></tbody></table></div>
-      <div class="sh"><div class="sh-title">🛍 Mahsulotlar</div>
-        <button class="btn btn-ghost btn-s" onclick="go('products',null)">Barchasi →</button></div>
-      <div class="tw"><table><thead><tr>
-        <th>Mahsulot</th><th>Narx</th><th>Kategoriya</th><th>Status</th>
-      </tr></thead><tbody id="dPBody"></tbody></table></div>
-    </div>
-
-    <!-- ═══ USERS ═══ -->
-    <div class="pg" id="pg-users">
-      <div class="tbar">
-        <input class="srch" placeholder="🔍 Ism, ID, username…" id="uSearch" oninput="renderUsers()"/>
-        <select class="fsel" id="uFilter" onchange="renderUsers()">
-          <option value="all">Barchasi</option>
-          <option value="active">Faol</option>
-          <option value="banned">Bloklangan</option>
-        </select>
-      </div>
-      <div class="tw"><table><thead><tr>
-        <th>ID</th><th>Ism</th><th>Username</th><th>Til</th><th>Status</th><th>Sana</th><th>Amal</th>
-      </tr></thead><tbody id="uBody"></tbody></table></div>
-    </div>
-
-    <!-- ═══ ORDERS ═══ -->
-    <div class="pg" id="pg-orders">
-      <div class="tbar">
-        <input class="srch" placeholder="🔍 Mahsulot, ID…" id="oSearch" oninput="renderOrders()"/>
-        <select class="fsel" id="oFilter" onchange="renderOrders()">
-          <option value="all">Barchasi</option>
-          <option value="pending">Kutmoqda</option>
-          <option value="confirmed">Tasdiqlangan</option>
-          <option value="cancelled">Bekor</option>
-        </select>
-      </div>
-      <div class="tw"><table><thead><tr>
-        <th>#</th><th>User ID</th><th>Mahsulot</th><th>Miqdor</th><th>Narx</th><th>Status</th><th>Sana</th><th>Amal</th>
-      </tr></thead><tbody id="oBody"></tbody></table></div>
-    </div>
-
-    <!-- ═══ PRODUCTS ═══ -->
-    <div class="pg" id="pg-products">
-      <div class="tbar">
-        <input class="srch" placeholder="🔍 Mahsulot nomi, kategoriya…" id="pSearch" oninput="renderProducts()"/>
-        <select class="fsel" id="pFilter" onchange="renderProducts()">
-          <option value="all">Barchasi</option>
-          <option value="active">Faol</option>
-          <option value="inactive">Nofaol</option>
-        </select>
-        <button class="btn-pri btn" onclick="openAddModal()">➕ Qo'shish</button>
-      </div>
-      <div class="pgrid" id="pGrid"></div>
-    </div>
-
-    <!-- ═══ BROADCAST ═══ -->
-    <div class="pg" id="pg-broadcast">
-      <div class="bc-box">
-        <div class="sh-title" style="margin-bottom:14px">📢 Barcha userlarga xabar</div>
-        <label class="form-label">Xabar (HTML qo'llab-quvvatlanadi)</label>
-        <textarea class="bc-ta" id="bcText" placeholder="Salom! 🎉 Yangilik…" oninput="bcPreview()"></textarea>
-        <label class="form-label" style="margin-top:12px">Ko'rinish:</label>
-        <div class="bc-pre" id="bcPre">—</div>
-        <div class="bc-meta" id="bcMeta">📤 0 ta foydalanuvchiga yuboriladi</div>
-        <button class="btn-pri btn" onclick="sendBC()">📤 Yuborish</button>
-      </div>
-      <div style="margin-top:26px">
-        <div class="sh-title" style="margin-bottom:14px">📋 Broadcast tarixi</div>
-        <div class="tw"><table><thead><tr>
-          <th>#</th><th>Xabar</th><th>✅</th><th>❌</th><th>Sana</th>
-        </tr></thead><tbody id="bcLogs"></tbody></table></div>
-      </div>
-    </div>
-
-    <!-- ═══ SETTINGS ═══ -->
-    <div class="pg" id="pg-settings">
-      <div style="max-width:500px">
-        <div class="bc-box" style="margin-bottom:18px">
-          <div class="sh-title" style="margin-bottom:16px">⚙️ Bot sozlamalari</div>
-          <div class="form-group"><label class="form-label">Bot Token</label>
-            <input class="form-input" type="password" id="cfgTok" placeholder="1234567890:AAAA…"/></div>
-          <div class="form-group"><label class="form-label">WebApp URL</label>
-            <input class="form-input" id="cfgUrl" placeholder="https://your-domain.com"/></div>
-          <div class="form-group"><label class="form-label">Admin IDs (vergul bilan)</label>
-            <input class="form-input" id="cfgAdm" placeholder="123456789,987654321"/></div>
-          <div class="form-group"><label class="form-label">Yangi parol</label>
-            <input class="form-input" type="password" id="cfgPass" placeholder="(o'zgartirmasangiz bo'sh qoldiring)"/></div>
-          <button class="btn-pri btn" onclick="saveSettings()">💾 Saqlash</button>
-        </div>
-        <div class="bc-box">
-          <div class="sh-title" style="margin-bottom:12px">📄 .env fayl</div>
-          <pre id="envPre" style="font-family:var(--mono);font-size:12px;color:var(--accent);
-            background:var(--sf2);border-radius:10px;padding:14px;overflow-x:auto;
-            white-space:pre-wrap;line-height:1.7"></pre>
-          <button class="btn btn-ghost" style="margin-top:10px" onclick="copyEnv()">📋 Nusxa</button>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-</div><!-- /main -->
-
-<!-- ═══ PRODUCT MODAL ═══ -->
-<div class="modal-bg" id="prodModal">
-  <div class="modal">
-    <div class="modal-title">
-      <span id="modalTitle">➕ Yangi mahsulot</span>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <input type="hidden" id="editId"/>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Mahsulot nomi *</label>
-        <input class="form-input" id="mName" placeholder="Burger"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Narx (so'm) *</label>
-        <input class="form-input" type="number" id="mPrice" placeholder="35000"/>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Kategoriya</label>
-        <select class="form-select form-input" id="mCat">
-          <option>Ovqat</option><option>Ichimlik</option>
-          <option>Shirinlik</option><option>Boshqa</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Emoji</label>
-        <input class="form-input" id="mEmoji" placeholder="🍔" maxlength="4"/>
-        <div class="emoji-picker" id="emojiPick"></div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Tavsif</label>
-      <textarea class="form-textarea" id="mDesc" placeholder="Mahsulot haqida qisqacha…"></textarea>
-    </div>
-    <div class="form-group" id="activeGroup">
-      <label class="form-label">
-        <input type="checkbox" id="mActive" checked style="margin-right:6px"/>
-        Faol (ko'rsatilsin)
-      </label>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal()">Bekor</button>
-      <button class="btn-pri btn" id="mSave" onclick="saveProduct()">💾 Saqlash</button>
-    </div>
-  </div>
+<div class="success" id="successScreen">
+  <div class="sicon">✅</div>
+  <div class="stitle">Yuborildi!</div>
+  <div class="ssub">Ma'lumotingiz muvaffaqiyatli<br>botga yuborildi.</div>
 </div>
+
+<button class="main-btn" id="mainBtn" onclick="submit()">📤 Yuborish</button>
 
 <script>
-// ── DATA ─────────────────────────────────────────────────────────────────────
-const CFG = {
-  pass:   localStorage.getItem('ap') || 'admin123',
-  token:  localStorage.getItem('tok') || 'YOUR_BOT_TOKEN',
-  url:    localStorage.getItem('url') || 'https://your-domain.com',
-  admins: localStorage.getItem('adm') || '123456789',
-};
+const tg = window.Telegram.WebApp;
+tg.expand(); tg.ready();
 
-const DB = {
-  users:[
-    {id:1,tid:123456789,name:'Ali Valiyev',   uname:'alidev',    lang:'uz',banned:false,date:'2025-01-10'},
-    {id:2,tid:987654321,name:'Malika Tosheva',uname:'malika_t',  lang:'uz',banned:false,date:'2025-02-15'},
-    {id:3,tid:111222333,name:'Jasur Qodirov', uname:null,        lang:'ru',banned:true, date:'2025-03-01'},
-    {id:4,tid:444555666,name:'Nodira Xasan',  uname:'nodira_x',  lang:'uz',banned:false,date:'2025-03-20'},
-    {id:5,tid:777888999,name:'Bekzod Rahimov',uname:'bekzod99',  lang:'uz',banned:false,date:'2025-04-01'},
-  ],
-  products:[
-    {id:1,name:'Burger', emoji:'🍔',price:35000,cat:'Ovqat',   desc:'Mazali burger',   active:true},
-    {id:2,name:'Pizza',  emoji:'🍕',price:65000,cat:'Ovqat',   desc:'Italyan pizza',   active:true},
-    {id:3,name:'Sushi',  emoji:'🍣',price:80000,cat:'Ovqat',   desc:'Yapon oshxonasi', active:true},
-    {id:4,name:'Kofe',   emoji:'☕',price:15000,cat:'Ichimlik',desc:'Issiq kofe',       active:true},
-    {id:5,name:'Choy',   emoji:'🍵',price:10000,cat:'Ichimlik',desc:'Yashil choy',      active:false},
-  ],
-  orders:[
-    {id:1,uid:123456789,prod:'Burger',qty:2,price:70000, status:'confirmed',date:'2025-04-18 10:30'},
-    {id:2,uid:987654321,prod:'Pizza', qty:1,price:65000, status:'pending',  date:'2025-04-19 14:22'},
-    {id:3,uid:111222333,prod:'Sushi', qty:3,price:240000,status:'cancelled',date:'2025-04-19 16:05'},
-    {id:4,uid:444555666,prod:'Kofe',  qty:2,price:30000, status:'confirmed',date:'2025-04-20 09:11'},
-    {id:5,uid:777888999,prod:'Pizza', qty:2,price:130000,status:'pending',  date:'2025-04-21 11:44'},
-  ],
-  broadcasts:[
-    {id:1,text:"Yangi mahsulotlar qo'shildi! 🎉",sent:4,fail:1,date:'2025-04-15'},
-    {id:2,text:'Bugun chegirmalar mavjud!',        sent:5,fail:0,date:'2025-04-20'},
-  ],
-};
-
-// ── LOGIN ─────────────────────────────────────────────────────────────────────
-function login(){
-  if(document.getElementById('li').value === CFG.pass){
-    document.getElementById('lw').style.display='none';
-    sessionStorage.setItem('ok','1'); init();
-  } else {
-    document.getElementById('lerr').style.display='block';
-    document.getElementById('li').value='';
-  }
-}
-document.getElementById('li').addEventListener('keydown',e=>{ if(e.key==='Enter') login(); });
-if(sessionStorage.getItem('ok')==='1'){
-  document.getElementById('lw').style.display='none'; init();
+// Theme
+if(tg.colorScheme === 'light'){
+  document.documentElement.style.setProperty('--bg','#f2f4fb');
+  document.documentElement.style.setProperty('--s1','#ffffff');
+  document.documentElement.style.setProperty('--s2','#eaecf7');
+  document.documentElement.style.setProperty('--b','#d5d8ed');
+  document.documentElement.style.setProperty('--text','#1a1d2e');
+  document.documentElement.style.setProperty('--muted','#717593');
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
-function init(){
-  updateStats(); renderDash(); renderUsers(); renderOrders();
-  renderProducts(); renderBCLogs(); loadSettings();
-  setInterval(()=>{ document.getElementById('clock').textContent=
-    new Date().toLocaleString('uz-UZ',{hour:'2-digit',minute:'2-digit',second:'2-digit',
-    day:'2-digit',month:'2-digit'}); }, 1000);
-  // Emoji picker
-  ['🍔','🍕','🍣','🍜','🌮','🥗','☕','🧋','🍵','🥤','🍰','🎂','🍫','📦'].forEach(e=>{
-    const b=document.createElement('button');b.className='ep-btn';b.textContent=e;
-    b.onclick=()=>{ document.getElementById('mEmoji').value=e;
-      document.querySelectorAll('.ep-btn').forEach(x=>x.classList.remove('sel'));
-      b.classList.add('sel'); };
-    document.getElementById('emojiPick').appendChild(b);
-  });
+const user = tg.initDataUnsafe?.user;
+if(user){
+  const fn = [user.first_name, user.last_name].filter(Boolean).join(' ');
+  document.getElementById('hName').textContent = fn || 'Buyurtma';
+  document.getElementById('iName').textContent = fn || '—';
+  document.getElementById('iId').textContent = 'ID: ' + user.id;
+  document.getElementById('iUser').value = user.username ? '@'+user.username : '—';
+  document.getElementById('iLang').value = user.language_code || '—';
+}
+document.getElementById('iPlatform').value = tg.platform || '—';
+document.getElementById('iVer').value = tg.version || '—';
+
+// Products (demo - real botda API dan olinadi)
+const DEMO_PRODUCTS = [
+  {id:1,name:'Burger',emoji:'🍔',price:35000,category:'Ovqat'},
+  {id:2,name:'Pizza',emoji:'🍕',price:65000,category:'Ovqat'},
+  {id:3,name:'Sushi',emoji:'🍣',price:80000,category:'Ovqat'},
+  {id:4,name:'Kofe',emoji:'☕',price:15000,category:'Ichimlik'},
+  {id:5,name:'Choy',emoji:'🍵',price:10000,category:'Ichimlik'},
+];
+
+let products = [];
+let selProduct = null, qty = 1, curTab = 'order';
+
+function loadProducts(){
+  // Real loyihada: fetch('/api/products').then(r=>r.json()).then(renderProducts)
+  setTimeout(() => renderProducts(DEMO_PRODUCTS), 400);
 }
 
-// ── STATS ─────────────────────────────────────────────────────────────────────
-function updateStats(){
-  const rev = DB.orders.filter(o=>o.status==='confirmed').reduce((s,o)=>s+o.price,0);
-  const pend = DB.orders.filter(o=>o.status==='pending').length;
-  const actP = DB.products.filter(p=>p.active).length;
-  document.getElementById('su').textContent = DB.users.length;
-  document.getElementById('sp').textContent = DB.products.length;
-  document.getElementById('so').textContent = DB.orders.length;
-  document.getElementById('sr').textContent = (rev/1000).toFixed(0)+'K';
-  document.getElementById('soPend').textContent = `⏳ ${pend} kutmoqda`;
-  document.getElementById('spA').textContent = `${actP} faol`;
-  document.getElementById('ubadge').textContent = DB.users.length;
-  document.getElementById('obadge').textContent = pend;
-  document.getElementById('pbadge').textContent = DB.products.length;
-}
-
-// ── STATUS BADGE ──────────────────────────────────────────────────────────────
-function sbadge(s){
-  const m={confirmed:['g','✅ Tasdiqlangan'],pending:['y','⏳ Kutmoqda'],cancelled:['r','❌ Bekor']};
-  const [c,l]=m[s]||['b',s];
-  return `<span class="bge ${c}">${l}</span>`;
-}
-
-// ── DASHBOARD ─────────────────────────────────────────────────────────────────
-function renderDash(){
-  document.getElementById('dOBody').innerHTML = DB.orders.slice(-5).reverse().map(o=>
-    `<tr><td class="tm">#${o.id}</td><td class="tm">${o.uid}</td><td class="tb">${o.prod}</td>
-     <td style="color:var(--green);font-family:var(--mono)">${o.price.toLocaleString()}</td>
-     <td>${sbadge(o.status)}</td><td class="tm">${o.date}</td></tr>`).join('');
-  document.getElementById('dPBody').innerHTML = DB.products.slice(0,6).map(p=>
-    `<tr><td class="tb">${p.emoji} ${p.name}</td>
-     <td style="color:var(--accent);font-family:var(--mono)">${p.price.toLocaleString()}</td>
-     <td><span class="bge b">${p.cat}</span></td>
-     <td>${p.active?'<span class="bge g">🟢 Faol</span>':'<span class="bge r">🔴 Nofaol</span>'}</td></tr>`).join('');
-}
-
-// ── USERS ─────────────────────────────────────────────────────────────────────
-function renderUsers(){
-  const q=document.getElementById('uSearch').value.toLowerCase();
-  const f=document.getElementById('uFilter').value;
-  document.getElementById('uBody').innerHTML = DB.users.filter(u=>{
-    const m=u.name.toLowerCase().includes(q)||String(u.tid).includes(q)||(u.uname||'').includes(q);
-    return m&&(f==='all'||(f==='banned'&&u.banned)||(f==='active'&&!u.banned));
-  }).map(u=>`<tr>
-    <td class="tm">${u.tid}</td><td class="tb">${u.name}</td>
-    <td class="tm">@${u.uname||'—'}</td><td>${u.lang||'—'}</td>
-    <td>${u.banned?'<span class="bge r">🚫 Bloklangan</span>':'<span class="bge g">✅ Faol</span>'}</td>
-    <td class="tm">${u.date}</td>
-    <td>${u.banned
-      ?`<button class="btn btn-grn btn-s" onclick="unban(${u.id})">Ochish</button>`
-      :`<button class="btn btn-red btn-s" onclick="ban(${u.id})">Bloklash</button>`}</td>
-  </tr>`).join('');
-}
-function ban(id){ if(!confirm('Bloklansinmi?')) return;
-  DB.users.find(u=>u.id===id).banned=true; renderUsers(); updateStats(); toast('🚫 Bloklandi'); }
-function unban(id){
-  DB.users.find(u=>u.id===id).banned=false; renderUsers(); updateStats(); toast('✅ Blok ochildi'); }
-
-// ── ORDERS ────────────────────────────────────────────────────────────────────
-function renderOrders(){
-  const q=document.getElementById('oSearch').value.toLowerCase();
-  const f=document.getElementById('oFilter').value;
-  document.getElementById('oBody').innerHTML = DB.orders.filter(o=>{
-    return (o.prod.toLowerCase().includes(q)||String(o.id).includes(q))&&(f==='all'||o.status===f);
-  }).map(o=>`<tr>
-    <td class="tm">#${o.id}</td><td class="tm">${o.uid}</td><td class="tb">${o.prod}</td>
-    <td>${o.qty}</td><td style="color:var(--green);font-family:var(--mono)">${o.price.toLocaleString()}</td>
-    <td>${sbadge(o.status)}</td><td class="tm">${o.date}</td>
-    <td style="display:flex;gap:5px">${o.status==='pending'
-      ?`<button class="btn btn-grn btn-s" onclick="confOrder(${o.id})">✅</button>
-        <button class="btn btn-red btn-s" onclick="cancOrder(${o.id})">❌</button>`
-      :'—'}</td>
-  </tr>`).join('');
-}
-function confOrder(id){ DB.orders.find(o=>o.id===id).status='confirmed';
-  renderOrders(); renderDash(); updateStats(); toast('✅ Tasdiqlandi'); }
-function cancOrder(id){ DB.orders.find(o=>o.id===id).status='cancelled';
-  renderOrders(); renderDash(); updateStats(); toast('❌ Bekor qilindi'); }
-
-// ── PRODUCTS ──────────────────────────────────────────────────────────────────
-function renderProducts(){
-  const q=document.getElementById('pSearch').value.toLowerCase();
-  const f=document.getElementById('pFilter').value;
-  const list = DB.products.filter(p=>{
-    const m=p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q);
-    return m&&(f==='all'||(f==='active'&&p.active)||(f==='inactive'&&!p.active));
-  });
-  document.getElementById('pGrid').innerHTML = list.map(p=>`
-    <div class="pcard ${p.active?'':'inactive'}">
-      <div class="pc-status ${p.active?'':'off'}"></div>
-      <div style="font-size:36px;margin-bottom:10px">${p.emoji}</div>
+function renderProducts(list){
+  products = list;
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = list.map(p=>`
+    <div class="pc" id="pc${p.id}" onclick="selProd(${p.id})">
+      <div class="pc-em">${p.emoji}</div>
       <div class="pc-name">${p.name}</div>
-      <div class="pc-desc">${p.desc||'—'}</div>
-      <div class="pc-price">${p.price.toLocaleString()} so'm</div>
-      <div class="pc-cat">🗂 ${p.cat}</div>
-      <div class="pc-actions">
-        <button class="btn btn-yel btn-s" onclick="openEditModal(${p.id})">✏️ Tahrir</button>
-        <button class="btn btn-red btn-s" onclick="delProduct(${p.id})">🗑</button>
-        <button class="btn ${p.active?'btn-ghost':'btn-grn'} btn-s" onclick="toggleProd(${p.id})">${p.active?'🔴 Off':'🟢 On'}</button>
-      </div>
-      <div class="pc-id">ID: ${p.id}</div>
+      <div class="pc-price">${p.price.toLocaleString('uz-UZ')} so'm</div>
+      <div class="pc-cat">${p.category}</div>
     </div>`).join('');
-  if(!list.length) document.getElementById('pGrid').innerHTML=
-    '<div style="color:var(--mu);grid-column:1/-1;text-align:center;padding:30px">📭 Mahsulotlar topilmadi</div>';
 }
 
-function toggleProd(id){
-  const p=DB.products.find(x=>x.id===id); p.active=!p.active;
-  renderProducts(); renderDash(); updateStats();
-  toast(p.active?'🟢 Faollashtirildi':'🔴 O\'chirildi');
-}
-function delProduct(id){
-  if(!confirm('Mahsulotni o\'chirishni tasdiqlaysizmi?')) return;
-  DB.products=DB.products.filter(p=>p.id!==id);
-  renderProducts(); renderDash(); updateStats(); toast('🗑 O\'chirildi');
+function selProd(id){
+  document.querySelectorAll('.pc').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('pc'+id).classList.add('sel');
+  selProduct = products.find(p=>p.id===id);
+  updateTotal();
+  tg.HapticFeedback?.selectionChanged();
 }
 
-// ── MODAL ─────────────────────────────────────────────────────────────────────
-function openAddModal(){
-  document.getElementById('modalTitle').textContent = '➕ Yangi mahsulot';
-  document.getElementById('editId').value='';
-  document.getElementById('mName').value='';
-  document.getElementById('mPrice').value='';
-  document.getElementById('mEmoji').value='📦';
-  document.getElementById('mCat').value='Ovqat';
-  document.getElementById('mDesc').value='';
-  document.getElementById('mActive').checked=true;
-  document.getElementById('activeGroup').style.display='block';
-  document.getElementById('prodModal').classList.add('show');
-  document.querySelectorAll('.ep-btn').forEach(b=>b.classList.remove('sel'));
+function chQty(d){
+  qty = Math.max(1, Math.min(20, qty+d));
+  document.getElementById('qtyVal').textContent = qty;
+  updateTotal();
+  tg.HapticFeedback?.impactOccurred('light');
 }
 
-function openEditModal(id){
-  const p=DB.products.find(x=>x.id===id);
-  document.getElementById('modalTitle').textContent = '✏️ Mahsulotni tahrirlash';
-  document.getElementById('editId').value=p.id;
-  document.getElementById('mName').value=p.name;
-  document.getElementById('mPrice').value=p.price;
-  document.getElementById('mEmoji').value=p.emoji;
-  document.getElementById('mCat').value=p.cat;
-  document.getElementById('mDesc').value=p.desc||'';
-  document.getElementById('mActive').checked=p.active;
-  document.getElementById('activeGroup').style.display='block';
-  document.getElementById('prodModal').classList.add('show');
-  document.querySelectorAll('.ep-btn').forEach(b=>{
-    b.classList.toggle('sel', b.textContent===p.emoji);
-  });
+function updateTotal(){
+  const t = selProduct ? selProduct.price * qty : 0;
+  document.getElementById('totalVal').textContent = t > 0 ? t.toLocaleString('uz-UZ')+' so\'m' : '0 so\'m';
 }
 
-function closeModal(){ document.getElementById('prodModal').classList.remove('show'); }
-
-function saveProduct(){
-  const eid=document.getElementById('editId').value;
-  const name=document.getElementById('mName').value.trim();
-  const price=parseFloat(document.getElementById('mPrice').value);
-  if(!name){ toast('❗ Nom kiriting'); return; }
-  if(!price||price<=0){ toast('❗ Narx kiriting'); return; }
-
-  const data={
-    name, price,
-    emoji:document.getElementById('mEmoji').value||'📦',
-    cat:document.getElementById('mCat').value,
-    desc:document.getElementById('mDesc').value.trim(),
-    active:document.getElementById('mActive').checked,
-  };
-
-  if(eid){
-    const p=DB.products.find(x=>x.id==eid);
-    Object.assign(p,data);
-    toast('✅ Yangilandi');
-  } else {
-    data.id=Math.max(0,...DB.products.map(p=>p.id))+1;
-    DB.products.push(data);
-    toast('✅ Qo\'shildi');
-  }
-  closeModal(); renderProducts(); renderDash(); updateStats();
-}
-
-// Close modal on bg click
-document.getElementById('prodModal').addEventListener('click',e=>{
-  if(e.target===document.getElementById('prodModal')) closeModal();
-});
-
-// ── BROADCAST ─────────────────────────────────────────────────────────────────
-function bcPreview(){
-  const t=document.getElementById('bcText').value;
-  document.getElementById('bcPre').innerHTML=t||'—';
-  const act=DB.users.filter(u=>!u.banned).length;
-  document.getElementById('bcMeta').textContent=`📤 ${act} ta foydalanuvchiga yuboriladi`;
-}
-function sendBC(){
-  const t=document.getElementById('bcText').value.trim();
-  if(!t){ toast('❗ Xabar bo\'sh'); return; }
-  if(!confirm('Yuborilsinmi?')) return;
-  const sent=DB.users.filter(u=>!u.banned).length;
-  DB.broadcasts.push({id:DB.broadcasts.length+1,text:t,sent,fail:0,
-    date:new Date().toLocaleDateString('uz-UZ')});
-  document.getElementById('bcText').value='';
-  document.getElementById('bcPre').innerHTML='—';
-  renderBCLogs(); updateStats(); toast(`✅ ${sent} ta foydalanuvchiga yuborildi`);
-}
-function renderBCLogs(){
-  document.getElementById('bcLogs').innerHTML = DB.broadcasts.slice().reverse().map(b=>
-    `<tr><td class="tm">#${b.id}</td>
-     <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.text}</td>
-     <td><span class="bge g">✅ ${b.sent}</span></td>
-     <td>${b.fail?`<span class="bge r">❌ ${b.fail}</span>`:'—'}</td>
-     <td class="tm">${b.date}</td></tr>`).join('');
-}
-
-// ── SETTINGS ──────────────────────────────────────────────────────────────────
-function loadSettings(){
-  document.getElementById('cfgTok').value=CFG.token;
-  document.getElementById('cfgUrl').value=CFG.url;
-  document.getElementById('cfgAdm').value=CFG.admins;
-  envPrev();
-}
-function saveSettings(){
-  CFG.token=document.getElementById('cfgTok').value;
-  CFG.url=document.getElementById('cfgUrl').value;
-  CFG.admins=document.getElementById('cfgAdm').value;
-  const np=document.getElementById('cfgPass').value;
-  if(np){ CFG.pass=np; localStorage.setItem('ap',np); }
-  localStorage.setItem('tok',CFG.token);
-  localStorage.setItem('url',CFG.url);
-  localStorage.setItem('adm',CFG.admins);
-  envPrev(); toast('💾 Saqlandi');
-}
-function envPrev(){
-  document.getElementById('envPre').textContent=
-`BOT_TOKEN=${CFG.token}
-BOT_USERNAME=your_bot_username
-ADMIN_IDS=${CFG.admins}
-WEBAPP_URL=${CFG.url}
-ADMIN_PASSWORD=${CFG.pass}
-DATABASE_URL=sqlite+aiosqlite:///./data/bot.db
-LOG_LEVEL=INFO`;
-}
-function copyEnv(){
-  navigator.clipboard.writeText(document.getElementById('envPre').textContent);
-  toast('📋 Nusxa olindi');
-}
-
-// ── NAV ───────────────────────────────────────────────────────────────────────
-const TITLES={dashboard:'Dashboard',users:'Foydalanuvchilar',orders:'Buyurtmalar',
-  products:'Mahsulotlar',broadcast:'Broadcast',settings:'Sozlamalar'};
-function go(name, el){
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  document.getElementById('pg-'+name).classList.add('on');
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+// Tabs
+function switchTab(name, el){
+  curTab = name;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   if(el) el.classList.add('on');
-  document.getElementById('ptitle').textContent=TITLES[name]||name;
-  closeSB();
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('tab-'+name).classList.add('on');
+  const labels = {order:'🛒 Buyurtma', form:'📤 Yuborish', info:'📋 Yuborish'};
+  document.getElementById('mainBtn').textContent = labels[name];
 }
-function refresh(){ updateStats(); renderDash(); renderProducts(); toast('🔄 Yangilandi'); }
-function openSB(){ document.getElementById('sb').classList.add('open');
-  document.getElementById('ov').classList.add('show'); }
-function closeSB(){ document.getElementById('sb').classList.remove('open');
-  document.getElementById('ov').classList.remove('show'); }
 
-// ── TOAST ─────────────────────────────────────────────────────────────────────
-function toast(msg){
-  const t=document.createElement('div');
-  t.textContent=msg;
-  Object.assign(t.style,{position:'fixed',bottom:'22px',right:'22px',zIndex:'999',
-    background:'var(--sf2)',border:'1px solid var(--bd)',color:'var(--tx)',
-    padding:'11px 16px',borderRadius:'12px',fontSize:'13px',fontFamily:'var(--font)',
-    fontWeight:'700',boxShadow:'0 8px 28px rgba(0,0,0,.4)',animation:'fu .3s ease'});
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(),2400);
+function submit(){
+  let data = {};
+  if(curTab === 'order'){
+    if(!selProduct){ tg.showAlert('Mahsulot tanlang!'); return; }
+    data = {action:'order', product_id:selProduct.id, product:selProduct.name,
+            quantity:qty, price:selProduct.price*qty};
+  } else if(curTab === 'form'){
+    const name = document.getElementById('fName').value.trim();
+    const phone = document.getElementById('fPhone').value.trim();
+    if(!name){ tg.showAlert('Ism kiriting!'); return; }
+    data = {action:'form', name, phone, message:document.getElementById('fMsg').value.trim()};
+  } else {
+    data = {action:'info', user_id:user?.id, platform:tg.platform};
+  }
+  tg.sendData(JSON.stringify(data));
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('mainBtn').style.display = 'none';
+  document.getElementById('successScreen').classList.add('show');
+  tg.HapticFeedback?.notificationOccurred('success');
+  setTimeout(()=>tg.close(), 1800);
 }
+
+loadProducts();
 </script>
 </body>
 </html>
