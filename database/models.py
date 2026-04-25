@@ -1,6 +1,3 @@
-"""
-database/models.py
-"""
 from datetime import datetime
 from sqlalchemy import Column, Integer, BigInteger, String, Boolean, DateTime, Text, Float
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
@@ -25,14 +22,13 @@ class User(Base):
     last_name     = Column(String(128), nullable=True)
     language_code = Column(String(10), nullable=True)
     is_bot        = Column(Boolean, default=False)
-    is_premium    = Column(Boolean, default=False)
     is_banned     = Column(Boolean, default=False)
     created_at    = Column(DateTime, default=datetime.utcnow)
     last_active   = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     @property
     def full_name(self):
-        return " ".join(filter(None, [self.first_name, self.last_name])) or "Nomsiz"
+        return " ".join(filter(None,[self.first_name,self.last_name])) or "Nomsiz"
 
 class Product(Base):
     __tablename__ = "products"
@@ -40,7 +36,7 @@ class Product(Base):
     name        = Column(String(128), nullable=False)
     description = Column(Text, nullable=True)
     price       = Column(Float, nullable=False, default=0)
-    photo_id    = Column(String(256), nullable=True)   # Telegram file_id
+    photo_id    = Column(String(256), nullable=True)
     category    = Column(String(64), nullable=True, default="Asosiy")
     is_active   = Column(Boolean, default=True)
     created_at  = Column(DateTime, default=datetime.utcnow)
@@ -48,15 +44,17 @@ class Product(Base):
 
 class Order(Base):
     __tablename__ = "orders"
-    id         = Column(Integer, primary_key=True, autoincrement=True)
-    user_id    = Column(BigInteger, nullable=False, index=True)
-    product_id = Column(Integer, nullable=True)
-    product    = Column(String(128), nullable=False)
-    quantity   = Column(Integer, default=1)
-    price      = Column(Float, default=0)
-    status     = Column(String(32), default="pending")
-    note       = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    id           = Column(Integer, primary_key=True, autoincrement=True)
+    user_id      = Column(BigInteger, nullable=False, index=True)
+    telegram_username = Column(String(64), nullable=True)
+    customer_name    = Column(String(128), nullable=True)
+    customer_phone   = Column(String(32), nullable=True)
+    customer_address = Column(Text, nullable=True)
+    customer_note    = Column(Text, nullable=True)
+    items_json   = Column(Text, nullable=True)   # JSON ro'yxat
+    total_price  = Column(Float, default=0)
+    status       = Column(String(32), default="pending")
+    created_at   = Column(DateTime, default=datetime.utcnow)
 
 class BroadcastLog(Base):
     __tablename__ = "broadcast_logs"
@@ -71,7 +69,6 @@ async def init_db():
     import os; os.makedirs("data", exist_ok=True)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    # Demo mahsulotlar YO'Q — admin o'zi qo'shadi
 
 async def get_session():
     async with AsyncSessionLocal() as session:

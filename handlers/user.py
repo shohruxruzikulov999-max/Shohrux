@@ -20,7 +20,7 @@ def build_webapp_url(products: list) -> str:
     import urllib.parse
     prod_list = [
         {"id": p.id, "name": p.name, "price": p.price,
-         "category": p.category or "", "photo_url": ""}
+         "category": p.category or "", "photo_url": p.photo_url or ""}
         for p in products if p.is_active
     ]
     encoded = urllib.parse.quote(json.dumps(prod_list, ensure_ascii=False))
