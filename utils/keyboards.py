@@ -13,10 +13,11 @@ def admin_menu_kb():
     kb.button(text="📊 Statistika")
     kb.button(text="👥 Foydalanuvchilar")
     kb.button(text="📦 Buyurtmalar")
+    kb.button(text="📥 Excel yuklab olish")
     kb.button(text="🛍 Mahsulotlar")
     kb.button(text="📢 Broadcast")
     kb.button(text="🔙 Orqaga")
-    kb.adjust(2, 2, 1, 1)
+    kb.adjust(2, 2, 2, 1)
     return kb.as_markup(resize_keyboard=True)
 
 def cancel_kb():
