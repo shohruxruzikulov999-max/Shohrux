@@ -1,13 +1,15 @@
 """
-handlers/user.py — faqat /start va WebApp
+handlers/user.py
 """
 import json, logging
 from aiogram import Router, types, F
 from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from utils.keyboards import order_action_kb
 from database.crud import create_order, get_product, get_all_products
+from database.models import Order, User
 from config import settings
 
 logger = logging.getLogger(__name__)
@@ -15,16 +17,10 @@ router = Router()
 
 
 def build_webapp_url(products: list) -> str:
-    """Mahsulotlarni URL ga qo'shib WebApp URL yasaydi"""
     import urllib.parse
     prod_list = [
-        {
-            "id": p.id,
-            "name": p.name,
-            "price": p.price,
-            "category": p.category or "",
-            "photo_url": "",  # file_id to'g'ridan URL bo'lmaydi, bo'sh qoladi
-        }
+        {"id": p.id, "name": p.name, "price": p.price,
+         "category": p.category or "", "photo_url": ""}
         for p in products if p.is_active
     ]
     encoded = urllib.parse.quote(json.dumps(prod_list, ensure_ascii=False))
@@ -33,23 +29,20 @@ def build_webapp_url(products: list) -> str:
 
 @router.message(CommandStart())
 async def cmd_start(message: types.Message, db_user, is_new_user: bool, session: AsyncSession):
-    from aiogram.types import InlineKeyboardMarkup, WebAppInfo
-    from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+    from aiogram.types import WebAppInfo
+    from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
     greeting = "👋 Xush kelibsiz" if is_new_user else "👋 Qaytib keldingiz"
-
-    # Mahsulotlarni DB dan olamiz
     products = await get_all_products(session, only_active=True)
     webapp_url = build_webapp_url(products)
 
-    from aiogram.types import KeyboardButton, WebAppInfo as WI
     kb = ReplyKeyboardBuilder()
-    kb.button(text="🌐 Buyurtma berish", web_app=WI(url=webapp_url))
+    kb.button(text="🌐 Buyurtma berish", web_app=WebAppInfo(url=webapp_url))
     kb.adjust(1)
 
     await message.answer(
         f"{greeting}, <b>{db_user.full_name}</b>!\n\n"
-        "🌐 Buyurtma berish uchun quyidagi tugmani bosing 👇",
+        "🛒 Buyurtma berish uchun tugmani bosing 👇",
         reply_markup=kb.as_markup(resize_keyboard=True),
         parse_mode="HTML",
     )
@@ -63,49 +56,80 @@ async def webapp_data(message: types.Message, db_user, session: AsyncSession):
         action = data.get("action", "")
 
         if action == "order":
-            pid = data.get("product_id")
-            p = await get_product(session, pid) if pid else None
-            product_name = p.name if p else data.get("product", "Noma'lum")
-            qty = int(data.get("quantity", 1))
-            price = float(data.get("price", p.price * qty if p else 0))
-            order = await create_order(
-                session, db_user.telegram_id, product_name, qty, price, pid
+            items    = data.get("items", [])
+            total    = float(data.get("total", 0))
+            customer = data.get("customer", {})
+            payment  = data.get("payment", "—")
+
+            # Har bir item uchun DB ga yozamiz
+            order_ids = []
+            for item in items:
+                order = await create_order(
+                    session,
+                    user_id=db_user.telegram_id,
+                    product=item.get("name", "—"),
+                    quantity=int(item.get("qty", 1)),
+                    price=float(item.get("total", 0)),
+                    product_id=item.get("id"),
+                )
+                # Buyurtmaga mijoz ma'lumotlarini qo'shamiz (note sifatida)
+                order.note = (
+                    f"Ism: {customer.get('name','—')} | "
+                    f"Tel: {customer.get('phone','—')} | "
+                    f"Manzil: {customer.get('address','—')} | "
+                    f"To'lov: {payment}"
+                )
+                await session.commit()
+                order_ids.append(f"#{order.id}")
+
+            # Buyurtma raqami
+            order_num = order_ids[0] if order_ids else "#—"
+
+            # Adminlarga xabar
+            pay_icon = "⚡ Click" if payment == "click" else "💜 Payme"
+            items_text = "\n".join(
+                f"  • {i.get('name')} × {i.get('qty')} = {int(i.get('total',0)):,} so'm"
+                for i in items
             )
+            admin_text = (
+                f"🛒 <b>Yangi buyurtma {order_num}</b>\n\n"
+                f"👤 {db_user.full_name} (<code>{db_user.telegram_id}</code>)\n"
+                f"📦 <b>Mahsulotlar:</b>\n{items_text}\n"
+                f"💰 <b>Jami: {int(total):,} so'm</b>\n\n"
+                f"━━━━━━━━━━━━━━━━━\n"
+                f"👤 Ism: {customer.get('name','—')}\n"
+                f"📞 Tel: {customer.get('phone','—')}\n"
+                f"📍 Manzil: {customer.get('address','—')}\n"
+                f"💬 Izoh: {customer.get('note','—')}\n"
+                f"💳 To'lov: {pay_icon}"
+            )
+
             for admin_id in settings.admin_list:
                 try:
                     await message.bot.send_message(
-                        admin_id,
-                        f"🛒 <b>Yangi buyurtma #{order.id}</b>\n\n"
-                        f"👤 {db_user.full_name} (<code>{db_user.telegram_id}</code>)\n"
-                        f"📦 {product_name} × {qty}\n"
-                        f"💰 {int(price):,} so'm",
+                        admin_id, admin_text,
                         parse_mode="HTML",
-                        reply_markup=order_action_kb(order.id),
+                        reply_markup=order_action_kb(
+                            int(order_ids[0].replace("#","")) if order_ids else 0
+                        ),
                     )
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.error(f"Admin notify error: {e}")
+
             await message.answer(
-                f"✅ <b>Buyurtma #{order.id} qabul qilindi!</b>\n\n"
-                f"📦 {product_name} × {qty}\n"
-                f"💰 {int(price):,} so'm\n\n"
-                "Tez orada bog'lanamiz! 🙏",
+                f"✅ <b>Buyurtma qabul qilindi!</b>\n\n"
+                f"🧾 Raqam: <b>{order_num}</b>\n"
+                f"💰 Jami: <b>{int(total):,} so'm</b>\n\n"
+                f"📞 Tez orada bog'lanamiz, {customer.get('name','')}.  🙏",
                 parse_mode="HTML",
             )
 
-        elif action == "form":
-            await message.answer(
-                f"📝 <b>Xabar qabul qilindi!</b>\n\n"
-                f"👤 {data.get('name','—')}\n"
-                f"📞 {data.get('phone','—')}\n"
-                f"💬 {data.get('message','—')}",
-                parse_mode="HTML",
-            )
         else:
             await message.answer("✅ Qabul qilindi!", parse_mode="HTML")
 
     except Exception as e:
         logger.error(f"WebApp data error: {e}")
-        await message.answer("✅ Qabul qilindi!", parse_mode="HTML")
+        await message.answer("✅ Buyurtma qabul qilindi!", parse_mode="HTML")
 
 
 @router.callback_query(F.data.startswith("order_"))
