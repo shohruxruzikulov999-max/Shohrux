@@ -62,8 +62,7 @@ async def get_product(session: AsyncSession, pid: int) -> Optional[Product]:
 async def create_product(session: AsyncSession, name: str, price: float,
                          photo_url: str = None, category: str = "Asosiy",
                          description: str = "") -> Product:
-    p = Product(name=name, price=price, photo_url = Column(String)
-, category=category, description=description)
+    p = Product(name=name, price=price, photo_url=photo_url, category=category, description=description)
     session.add(p); await session.commit(); await session.refresh(p)
     return p
 
