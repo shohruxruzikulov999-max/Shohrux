@@ -53,6 +53,17 @@ async def on_shutdown():
 async def main():
     dp.startup.register(on_startup)
     dp.shutdown.register(on_shutdown)
+
+    # API server va bot birga ishga tushadi
+    from aiohttp import web
+    from api_server import create_app
+    api_app = create_app()
+    runner = web.AppRunner(api_app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", 8080)
+    await site.start()
+    logger.info("✅ API server: http://localhost:8080/api/products")
+
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 
 if __name__ == "__main__":

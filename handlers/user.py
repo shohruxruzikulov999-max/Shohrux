@@ -17,15 +17,45 @@ router = Router()
 
 
 def build_webapp_url(products: list) -> str:
-    import urllib.parse
+    """Mahsulotlarni webapp URL ga qo'shadi"""
+    import urllib.parse, os
     prod_list = [
         {"id": p.id, "name": p.name, "price": p.price,
          "category": p.category or "", "photo_url": p.photo_url or ""}
         for p in products if p.is_active
     ]
-    # Hash orqali yuboramiz - Telegram WebApp hash ni saqlab qoladi
-    encoded = urllib.parse.quote(json.dumps(prod_list, ensure_ascii=False))
-    return f"{settings.webapp_url}#products={encoded}"
+    # webapp/index.html ga mahsulotlarni yozamiz
+    update_webapp_products(prod_list)
+    return settings.webapp_url
+
+
+def update_webapp_products(prod_list: list):
+    """webapp/index.html ga mahsulotlar ma'lumotini yozadi"""
+    import os
+    webapp_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "webapp", "index.html")
+    if not os.path.exists(webapp_path):
+        return
+    try:
+        content = open(webapp_path, encoding="utf-8").read()
+        marker_start = "// PRODUCTS_DATA_START"
+        marker_end = "// PRODUCTS_DATA_END"
+        new_data = f"{marker_start}\nconst PRODUCTS_FROM_BOT = {json.dumps(prod_list, ensure_ascii=False)};\n{marker_end}"
+        if marker_start in content and marker_end in content:
+            import re
+            content = re.sub(
+                f"{marker_start}.*?{marker_end}",
+                new_data,
+                content,
+                flags=re.DOTALL
+            )
+        else:
+            content = content.replace(
+                "// ── PRODUCTS ───",
+                new_data + "\n// ── PRODUCTS ───"
+            )
+        open(webapp_path, "w", encoding="utf-8").write(content)
+    except Exception as e:
+        logger.error(f"update_webapp_products error: {e}")
 
 
 @router.message(CommandStart())
