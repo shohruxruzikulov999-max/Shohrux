@@ -36,7 +36,7 @@ class Product(Base):
     name        = Column(String(128), nullable=False)
     description = Column(Text, nullable=True)
     price       = Column(Float, nullable=False, default=0)
-    photo_id    = Column(String(256), nullable=True)
+    photo_url   = Column(String(512), nullable=True)
     category    = Column(String(64), nullable=True, default="Asosiy")
     is_active   = Column(Boolean, default=True)
     created_at  = Column(DateTime, default=datetime.utcnow)
