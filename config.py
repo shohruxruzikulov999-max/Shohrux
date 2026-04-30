@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=False)
 
-    bot_token:       str   = "8670307100:AAGPL-LE3nJ_JB8ZvIJsJ-GMLq202lcMIZs"
+    bot_token:       str   = "8619014116:AAET0RtCKmCQ1ag2Kg-cTkQ9L9yPeqDkCDA"
     bot_username:    str   = "https://t.me/ShohruxbeK_uchun_bot"
     admin_ids:       str   = "8302385031"
     webapp_url:      str   = "https://online.uzraisin.uz/"
